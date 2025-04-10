@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { auth } from './firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import Login from './Login';
+import ChatRoom from './ChatRoom';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -20,10 +21,13 @@ function App() {
   return (
     <div className="App">
       {user ? (
-        <div>
-          <h2>Welcome {user.isAnonymous ? "Guest" : user.email}</h2>
-          <button onClick={handleLogout}>Logout</button>
-        </div>
+        <>
+          <div style={{ textAlign: "center", marginTop: "1rem" }}>
+            <p>Welcome {user.isAnonymous ? "Guest" : user.email}</p>
+            <button onClick={handleLogout}>Logout</button>
+          </div>
+          <ChatRoom />
+        </>
       ) : (
         <Login onLogin={() => console.log("Logged in!")} />
       )}

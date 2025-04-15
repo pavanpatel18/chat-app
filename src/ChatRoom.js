@@ -71,15 +71,27 @@ export default function ChatRoom() {
                   borderBottomLeftRadius: isMine ? "15px" : "0",
                 }}
               >
+               <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px" }}>
                 <div
                   style={{
-                    fontSize: "0.75rem",
+                    width: "32px",
+                    height: "32px",
+                    borderRadius: "50%",
+                    backgroundColor: "#007bff",
+                    color: "#fff",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
                     fontWeight: "bold",
-                    marginBottom: "4px",
+                    fontSize: "0.9rem",
                   }}
                 >
-                  {msg.email}
+                  {msg.email?.charAt(0).toUpperCase() || "?"}
                 </div>
+                <span style={{ fontSize: "0.75rem", fontWeight: "bold" }}>
+                  {msg.email}
+                </span>
+              </div>
                 <div>{msg.text}</div>
                   <div style={{ fontSize: "0.7rem", color: "#555", marginTop: "4px", textAlign: "right" }}>
                     {msg.createdAt?.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}

@@ -45,11 +45,42 @@ export default function ChatRoom() {
     <div style={{ maxWidth: "600px", margin: "2rem auto", textAlign: "left" }}>
       <h2>Chat Room</h2>
       <div style={{ marginBottom: "1rem" }}>
-        {messages.map((msg) => (
-          <div key={msg.id} style={{ marginBottom: "0.5rem" }}>
-            <strong>{msg.email}:</strong> {msg.text}
-          </div>
-        ))}
+        {messages.map((msg) => {
+          const isMine = msg.uid === auth.currentUser.uid;
+          return (
+            <div
+              key={msg.id}
+              style={{
+                display: "flex",
+                justifyContent: isMine ? "flex-end" : "flex-start",
+                padding: "4px 0",
+              }}
+            >
+              <div
+                style={{
+                  maxWidth: "60%",
+                  background: isMine ? "#DCF8C6" : "#F1F0F0",
+                  color: "#000",
+                  padding: "10px",
+                  borderRadius: "15px",
+                  borderBottomRightRadius: isMine ? "0" : "15px",
+                  borderBottomLeftRadius: isMine ? "15px" : "0",
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: "0.75rem",
+                    fontWeight: "bold",
+                    marginBottom: "4px",
+                  }}
+                >
+                  {msg.email}
+                </div>
+                <div>{msg.text}</div>
+              </div>
+            </div>
+          );
+        })}
       </div>
       <form onSubmit={handleSend}>
         <input

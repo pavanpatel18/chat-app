@@ -1,5 +1,4 @@
-// src/ChatRoom.js
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { db, auth } from "./firebase";
 import {
   collection,
@@ -9,14 +8,13 @@ import {
   orderBy,
   onSnapshot,
 } from "firebase/firestore";
-import { useRef } from "react";
-
+import EmojiPicker from 'emoji-picker-react';
 
 export default function ChatRoom() {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
+  const [showPicker, setShowPicker] = useState(false);
   const bottomRef = useRef(null);
-
 
   useEffect(() => {
     const q = query(collection(db, "messages"), orderBy("createdAt"));
@@ -26,7 +24,8 @@ export default function ChatRoom() {
         msgs.push({ id: doc.id, ...doc.data() });
       });
       setMessages(msgs);
-      bottomRef.current?.scrollIntoView({ behavior: "smooth" });});
+      bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    });
 
     return () => unsubscribe();
   }, []);
@@ -48,6 +47,7 @@ export default function ChatRoom() {
   return (
     <div style={{ maxWidth: "600px", margin: "2rem auto", textAlign: "left" }}>
       <h2>Chat Room</h2>
+
       <div style={{ marginBottom: "1rem" }}>
         {messages.map((msg) => {
           const isMine = msg.uid === auth.currentUser.uid;
@@ -71,80 +71,126 @@ export default function ChatRoom() {
                   borderBottomLeftRadius: isMine ? "15px" : "0",
                 }}
               >
-               <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px" }}>
                 <div
                   style={{
-                    width: "32px",
-                    height: "32px",
-                    borderRadius: "50%",
-                    backgroundColor: "#007bff",
-                    color: "#fff",
                     display: "flex",
                     alignItems: "center",
-                    justifyContent: "center",
-                    fontWeight: "bold",
-                    fontSize: "0.9rem",
+                    gap: "8px",
+                    marginBottom: "4px",
                   }}
                 >
-                  {msg.email?.charAt(0).toUpperCase() || "?"}
-                </div>
-                <span style={{ fontSize: "0.75rem", fontWeight: "bold" }}>
-                  {msg.email}
-                </span>
-              </div>
-                <div>{msg.text}</div>
-                  <div style={{ fontSize: "0.7rem", color: "#555", marginTop: "4px", textAlign: "right" }}>
-                    {msg.createdAt?.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  <div
+                    style={{
+                      width: "32px",
+                      height: "32px",
+                      borderRadius: "50%",
+                      backgroundColor: "#007bff",
+                      color: "#fff",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontWeight: "bold",
+                      fontSize: "0.9rem",
+                    }}
+                  >
+                    {msg.email?.charAt(0).toUpperCase() || "?"}
                   </div>
+                  <span
+                    style={{ fontSize: "0.75rem", fontWeight: "bold" }}
+                  >
+                    {msg.email}
+                  </span>
+                </div>
+
+                <div>{msg.text}</div>
+
+                <div
+                  style={{
+                    fontSize: "0.7rem",
+                    color: "#555",
+                    marginTop: "4px",
+                    textAlign: "right",
+                  }}
+                >
+                  {msg.createdAt?.toDate().toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </div>
               </div>
             </div>
           );
         })}
         <div ref={bottomRef} />
       </div>
-      <form
-        onSubmit={handleSend}
-        style={{
-          display: "flex",
-          gap: "0.5rem",
-          alignItems: "center",
-          marginTop: "1rem",
-        }}
-      >
-        <input
-          type="text"
-          placeholder="Type a message..."
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          style={{
-            flexGrow: 1,
-            padding: "10px",
-            borderRadius: "20px",
-            border: "1px solid #ccc",
-            outline: "none",
-            fontSize: "1rem",
-          }}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && !e.shiftKey) {
-              handleSend(e);
+
+      <div style={{ marginTop: "1rem" }}>
+        {showPicker && (
+          <EmojiPicker
+            onEmojiClick={(event, emojiObject) =>
+              setMessage((prev) => prev + emojiObject.emoji)
             }
-          }}
-        />
-        <button
-          type="submit"
+          />
+        )}
+
+        <form
+          onSubmit={handleSend}
           style={{
-            padding: "10px 16px",
-            borderRadius: "20px",
-            backgroundColor: "#007bff",
-            color: "white",
-            border: "none",
-            cursor: "pointer",
-            fontWeight: "bold",
+            display: "flex",
+            gap: "0.5rem",
+            alignItems: "center",
           }}
         >
-          Send
-        </button>
-      </form>
+          <button
+            type="button"
+            onClick={() => setShowPicker(!showPicker)}
+            style={{
+              padding: "0.5rem",
+              fontSize: "1.2rem",
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+            }}
+          >
+            😊
+          </button>
+
+          <input
+            type="text"
+            placeholder="Type a message..."
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            style={{
+              flexGrow: 1,
+              padding: "10px",
+              borderRadius: "20px",
+              border: "1px solid #ccc",
+              outline: "none",
+              fontSize: "1rem",
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                handleSend(e);
+              }
+            }}
+          />
+
+          <button
+            type="submit"
+            style={{
+              padding: "10px 16px",
+              borderRadius: "20px",
+              backgroundColor: "#007bff",
+              color: "white",
+              border: "none",
+              cursor: "pointer",
+              fontWeight: "bold",
+            }}
+          >
+            Send
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

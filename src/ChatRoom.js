@@ -15,6 +15,7 @@ export default function ChatRoom() {
   const [messages, setMessages] = useState([]);
   const [showPicker, setShowPicker] = useState(false);
   const bottomRef = useRef(null);
+  const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
     const q = query(collection(db, "messages"), orderBy("createdAt"));
@@ -45,8 +46,35 @@ export default function ChatRoom() {
   };
 
   return (
-    <div style={{ maxWidth: "600px", margin: "2rem auto", textAlign: "left" }}>
+    <div
+      style={{
+        maxWidth: "600px",
+        margin: "2rem auto",
+        textAlign: "left",
+        backgroundColor: darkMode ? "#1e1e1e" : "#fff",
+        color: darkMode ? "#eee" : "#000",
+        padding: "1rem",
+        borderRadius: "10px",
+      }}
+    >
       <h2>Chat Room</h2>
+
+      <button
+        onClick={() => setDarkMode(!darkMode)}
+        style={{
+          marginBottom: "1rem",
+          background: "none",
+          border: "1px solid #888",
+          padding: "5px 12px",
+          borderRadius: "20px",
+          cursor: "pointer",
+          float: "right",
+          fontWeight: "bold",
+        }}
+      >
+        {darkMode ? "🌞 Light Mode" : "🌙 Dark Mode"}
+      </button>
+
 
       <div style={{ marginBottom: "1rem" }}>
         {messages.map((msg) => {

@@ -9,10 +9,14 @@ import {
   orderBy,
   onSnapshot,
 } from "firebase/firestore";
+import { useRef } from "react";
+
 
 export default function ChatRoom() {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
+  const bottomRef = useRef(null);
+
 
   useEffect(() => {
     const q = query(collection(db, "messages"), orderBy("createdAt"));
@@ -22,7 +26,7 @@ export default function ChatRoom() {
         msgs.push({ id: doc.id, ...doc.data() });
       });
       setMessages(msgs);
-    });
+      bottomRef.current?.scrollIntoView({ behavior: "smooth" });});
 
     return () => unsubscribe();
   }, []);
@@ -77,10 +81,14 @@ export default function ChatRoom() {
                   {msg.email}
                 </div>
                 <div>{msg.text}</div>
+                  <div style={{ fontSize: "0.7rem", color: "#555", marginTop: "4px", textAlign: "right" }}>
+                    {msg.createdAt?.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  </div>
               </div>
             </div>
           );
         })}
+        <div ref={bottomRef} />
       </div>
       <form onSubmit={handleSend}>
         <input

@@ -90,15 +90,48 @@ export default function ChatRoom() {
         })}
         <div ref={bottomRef} />
       </div>
-      <form onSubmit={handleSend}>
+      <form
+        onSubmit={handleSend}
+        style={{
+          display: "flex",
+          gap: "0.5rem",
+          alignItems: "center",
+          marginTop: "1rem",
+        }}
+      >
         <input
           type="text"
           placeholder="Type a message..."
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          style={{ width: "70%", marginRight: "1rem" }}
+          style={{
+            flexGrow: 1,
+            padding: "10px",
+            borderRadius: "20px",
+            border: "1px solid #ccc",
+            outline: "none",
+            fontSize: "1rem",
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              handleSend(e);
+            }
+          }}
         />
-        <button type="submit">Send</button>
+        <button
+          type="submit"
+          style={{
+            padding: "10px 16px",
+            borderRadius: "20px",
+            backgroundColor: "#007bff",
+            color: "white",
+            border: "none",
+            cursor: "pointer",
+            fontWeight: "bold",
+          }}
+        >
+          Send
+        </button>
       </form>
     </div>
   );

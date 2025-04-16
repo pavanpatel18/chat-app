@@ -16,6 +16,8 @@ export default function ChatRoom() {
   const [showPicker, setShowPicker] = useState(false);
   const bottomRef = useRef(null);
   const [darkMode, setDarkMode] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
+  const typingTimeoutRef = useRef(null);
 
   useEffect(() => {
     const q = query(collection(db, "messages"), orderBy("createdAt"));
@@ -152,6 +154,12 @@ export default function ChatRoom() {
         <div ref={bottomRef} />
       </div>
 
+      {isTyping && (
+        <div style={{ fontStyle: "italic", color: "#888", marginBottom: "0.5rem" }}>
+          You’re typing...
+        </div>
+      )}
+
       <div style={{ marginTop: "1rem" }}>
       {showPicker && (
         <EmojiPicker
@@ -187,7 +195,15 @@ export default function ChatRoom() {
             type="text"
             placeholder="Type a message..."
             value={message}
-            onChange={(e) => setMessage(e.target.value)}
+            onChange={(e) => {
+              setMessage(e.target.value);
+              setIsTyping(true);
+            
+              clearTimeout(typingTimeoutRef.current);
+              typingTimeoutRef.current = setTimeout(() => {
+                setIsTyping(false);
+              }, 2000);
+            }}            
             style={{
               flexGrow: 1,
               padding: "10px",

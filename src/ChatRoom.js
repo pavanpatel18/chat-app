@@ -8,7 +8,8 @@ import {
   orderBy,
   onSnapshot,
 } from "firebase/firestore";
-import EmojiPicker from 'emoji-picker-react';
+import EmojiPicker from "emoji-picker-react";
+import "./ChatRoom.css";
 
 export default function ChatRoom() {
   const [message, setMessage] = useState("");
@@ -48,100 +49,33 @@ export default function ChatRoom() {
   };
 
   return (
-    <div
-      style={{
-        maxWidth: "600px",
-        margin: "2rem auto",
-        textAlign: "left",
-        backgroundColor: darkMode ? "#1e1e1e" : "#fff",
-        color: darkMode ? "#eee" : "#000",
-        padding: "1rem",
-        borderRadius: "10px",
-      }}
-    >
+    <div className={`chat-container ${darkMode ? "dark" : "light"}`}>
       <h2>Chat Room</h2>
 
-      <button
-        onClick={() => setDarkMode(!darkMode)}
-        style={{
-          marginBottom: "1rem",
-          background: "none",
-          border: "1px solid #888",
-          padding: "5px 12px",
-          borderRadius: "20px",
-          cursor: "pointer",
-          float: "right",
-          fontWeight: "bold",
-        }}
-      >
+      <button className="toggle-button" onClick={() => setDarkMode(!darkMode)}>
         {darkMode ? "🌞 Light Mode" : "🌙 Dark Mode"}
       </button>
 
-
-      <div style={{ marginBottom: "1rem" }}>
+      <div className="messages-list">
         {messages.map((msg) => {
           const isMine = msg.uid === auth.currentUser.uid;
           return (
             <div
               key={msg.id}
+              className="message-wrapper"
               style={{
-                display: "flex",
                 justifyContent: isMine ? "flex-end" : "flex-start",
-                padding: "4px 0",
               }}
             >
-              <div
-                style={{
-                  maxWidth: "60%",
-                  background: isMine ? "#DCF8C6" : "#F1F0F0",
-                  color: "#000",
-                  padding: "10px",
-                  borderRadius: "15px",
-                  borderBottomRightRadius: isMine ? "0" : "15px",
-                  borderBottomLeftRadius: isMine ? "15px" : "0",
-                }}
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
-                    marginBottom: "4px",
-                  }}
-                >
-                  <div
-                    style={{
-                      width: "32px",
-                      height: "32px",
-                      borderRadius: "50%",
-                      backgroundColor: "#007bff",
-                      color: "#fff",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      fontWeight: "bold",
-                      fontSize: "0.9rem",
-                    }}
-                  >
+              <div className={`message-bubble ${isMine ? "message-mine" : "message-other"}`}>
+                <div className="message-meta">
+                  <div className="message-avatar">
                     {msg.email?.charAt(0).toUpperCase() || "?"}
                   </div>
-                  <span
-                    style={{ fontSize: "0.75rem", fontWeight: "bold" }}
-                  >
-                    {msg.email}
-                  </span>
+                  <span>{msg.email}</span>
                 </div>
-
                 <div>{msg.text}</div>
-
-                <div
-                  style={{
-                    fontSize: "0.7rem",
-                    color: "#555",
-                    marginTop: "4px",
-                    textAlign: "right",
-                  }}
-                >
+                <div className="message-time">
                   {msg.createdAt?.toDate().toLocaleTimeString([], {
                     hour: "2-digit",
                     minute: "2-digit",
@@ -154,63 +88,38 @@ export default function ChatRoom() {
         <div ref={bottomRef} />
       </div>
 
-      {isTyping && (
-        <div style={{ fontStyle: "italic", color: "#888", marginBottom: "0.5rem" }}>
-          You’re typing...
-        </div>
-      )}
+      {isTyping && <div className="typing-indicator">You’re typing...</div>}
 
       <div style={{ marginTop: "1rem" }}>
-      {showPicker && (
-        <EmojiPicker
-          onEmojiClick={(emojiObject) =>
-            setMessage((prev) => prev + emojiObject.emoji)
-          }
-      />      
-      )}
+        {showPicker && (
+          <EmojiPicker
+            onEmojiClick={(emojiObject) =>
+              setMessage((prev) => prev + emojiObject.emoji)
+            }
+          />
+        )}
 
-        <form
-          onSubmit={handleSend}
-          style={{
-            display: "flex",
-            gap: "0.5rem",
-            alignItems: "center",
-          }}
-        >
+        <form className="chat-form" onSubmit={handleSend}>
           <button
             type="button"
+            className="emoji-button"
             onClick={() => setShowPicker(!showPicker)}
-            style={{
-              padding: "0.5rem",
-              fontSize: "1.2rem",
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-            }}
           >
             😊
           </button>
 
           <input
+            className="chat-input"
             type="text"
             placeholder="Type a message..."
             value={message}
             onChange={(e) => {
               setMessage(e.target.value);
               setIsTyping(true);
-            
               clearTimeout(typingTimeoutRef.current);
               typingTimeoutRef.current = setTimeout(() => {
                 setIsTyping(false);
               }, 2000);
-            }}            
-            style={{
-              flexGrow: 1,
-              padding: "10px",
-              borderRadius: "20px",
-              border: "1px solid #ccc",
-              outline: "none",
-              fontSize: "1rem",
             }}
             onKeyDown={(e) => {
               if (e.key === "Enter" && !e.shiftKey) {
@@ -219,18 +128,7 @@ export default function ChatRoom() {
             }}
           />
 
-          <button
-            type="submit"
-            style={{
-              padding: "10px 16px",
-              borderRadius: "20px",
-              backgroundColor: "#007bff",
-              color: "white",
-              border: "none",
-              cursor: "pointer",
-              fontWeight: "bold",
-            }}
-          >
+          <button type="submit" className="send-button">
             Send
           </button>
         </form>

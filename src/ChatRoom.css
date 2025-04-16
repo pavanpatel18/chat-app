@@ -1,0 +1,120 @@
+/* ChatRoom.css */
+
+.chat-container {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 1rem;
+    border-radius: 10px;
+    text-align: left;
+  }
+  
+  .dark {
+    background-color: #1e1e1e;
+    color: #eee;
+  }
+  
+  .light {
+    background-color: #fff;
+    color: #000;
+  }
+  
+  .toggle-button {
+    margin-bottom: 1rem;
+    background: none;
+    border: 1px solid #888;
+    padding: 5px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    float: right;
+    font-weight: bold;
+  }
+  
+  .message-wrapper {
+    display: flex;
+    padding: 4px 0;
+  }
+  
+  .message-bubble {
+    max-width: 60%;
+    padding: 10px;
+    border-radius: 15px;
+  }
+  
+  .message-mine {
+    background-color: #DCF8C6;
+    border-bottom-right-radius: 0;
+  }
+  
+  .message-other {
+    background-color: #F1F0F0;
+    border-bottom-left-radius: 0;
+  }
+  
+  .message-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #007bff;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 0.9rem;
+  }
+  
+  .message-meta {
+    font-size: 0.75rem;
+    font-weight: bold;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .message-time {
+    font-size: 0.7rem;
+    color: #555;
+    margin-top: 4px;
+    text-align: right;
+  }
+  
+  .typing-indicator {
+    font-style: italic;
+    color: #888;
+    margin-bottom: 0.5rem;
+  }
+  
+  .chat-form {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+  
+  .chat-input {
+    flex-grow: 1;
+    padding: 10px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    outline: none;
+    font-size: 1rem;
+  }
+  
+  .send-button {
+    padding: 10px 16px;
+    border-radius: 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .emoji-button {
+    padding: 0.5rem;
+    font-size: 1.2rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  

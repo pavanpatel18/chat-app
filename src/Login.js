@@ -1,5 +1,6 @@
 // src/Login.js
 import React, { useState } from "react";
+import "./Login.css";
 import { auth } from "./firebase";
 import {
   signInWithEmailAndPassword,
@@ -38,7 +39,7 @@ export default function Login({ onLogin }) {
   };
 
   return (
-    <div style={{ textAlign: "center", marginTop: "3rem" }}>
+    <div className="login-container">
       <h2>Login</h2>
       <input
         type="email"

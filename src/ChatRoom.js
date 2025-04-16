@@ -16,6 +16,7 @@ export default function ChatRoom() {
   const [messages, setMessages] = useState([]);
   const [showPicker, setShowPicker] = useState(false);
   const bottomRef = useRef(null);
+  const inputRef = useRef(null);
   const [darkMode, setDarkMode] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const typingTimeoutRef = useRef(null);
@@ -29,6 +30,7 @@ export default function ChatRoom() {
       });
       setMessages(msgs);
       bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+      inputRef.current?.focus();
     });
 
     return () => unsubscribe();
@@ -110,6 +112,7 @@ export default function ChatRoom() {
 
           <input
             className="chat-input"
+            ref={inputRef}
             type="text"
             placeholder="Type a message..."
             value={message}

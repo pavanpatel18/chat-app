@@ -1,55 +1,75 @@
-/* ChatRoom.css */
+/* === LAYOUT === */
 
 .chat-container {
+    display: flex;
+    justify-content: center;
+    padding: 2rem 1rem;
+  }
+  
+  .chat-box {
+    width: 100%;
     max-width: 600px;
-    margin: 2rem auto;
+    background-color: inherit;
     padding: 1rem;
-    border-radius: 10px;
-    text-align: left;
+    border-radius: 12px;
+    box-shadow: 0 0 16px rgba(0, 0, 0, 0.1);
   }
   
-  .dark {
-    background-color: #1e1e1e;
-    color: #eee;
-  }
-  
-  .light {
-    background-color: #fff;
-    color: #000;
-  }
-  
-  .toggle-button {
+  .chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 1rem;
-    background: none;
-    border: 1px solid #888;
+  }
+  
+  /* === CONTROLS === */
+  
+  .toggle-button,
+  .logout-button {
     padding: 5px 12px;
     border-radius: 20px;
+    border: 1px solid #888;
+    background: none;
     cursor: pointer;
-    float: right;
+    margin-left: 0.5rem;
     font-weight: bold;
+  }
+  
+  .emoji-button {
+    padding: 0.5rem;
+    font-size: 1.2rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  
+  /* === MESSAGES === */
+  
+  .messages-list {
+    max-height: 60vh;
+    overflow-y: auto;
+    margin-bottom: 1rem;
+    padding-right: 4px;
   }
   
   .message-wrapper {
     display: flex;
-    padding: 4px 0;
+    padding: 6px 0;
+  }
+  
+  .message-wrapper.mine {
+    justify-content: flex-end;
+  }
+  
+  .message-wrapper.theirs {
+    justify-content: flex-start;
   }
   
   .message-bubble {
-    max-width: 60%;
+    max-width: 70%;
     padding: 10px;
     border-radius: 15px;
-    animation: fadeIn 0.3s ease;
-  }
-
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(6px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    animation: fadeIn 0.25s ease-in;
   }
   
   .message-mine {
@@ -62,6 +82,15 @@
     border-bottom-left-radius: 0;
   }
   
+  .message-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+    font-size: 0.75rem;
+    font-weight: bold;
+  }
+  
   .message-avatar {
     width: 32px;
     height: 32px;
@@ -71,31 +100,16 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: bold;
-    font-size: 0.9rem;
-  }
-  
-  .message-meta {
-    font-size: 0.75rem;
-    font-weight: bold;
-    margin-bottom: 4px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
   }
   
   .message-time {
     font-size: 0.7rem;
     color: #555;
-    margin-top: 4px;
     text-align: right;
+    margin-top: 4px;
   }
   
-  .typing-indicator {
-    font-style: italic;
-    color: #888;
-    margin-bottom: 0.5rem;
-  }
+  /* === FORM === */
   
   .chat-form {
     display: flex;
@@ -122,22 +136,16 @@
     font-weight: bold;
   }
   
-  .emoji-button {
-    padding: 0.5rem;
-    font-size: 1.2rem;
-    background: none;
-    border: none;
-    cursor: pointer;
+  /* === TYPING === */
+  
+  .typing-indicator {
+    font-style: italic;
+    color: #888;
+    margin-bottom: 0.5rem;
   }
   
-  /* Scrollbar Styling */
-.messages-list {
-    max-height: 60vh;
-    overflow-y: auto;
-    padding-right: 4px;
-  }
+  /* === SCROLLBAR === */
   
-  /* Webkit Scrollbar */
   .messages-list::-webkit-scrollbar {
     width: 8px;
   }
@@ -154,3 +162,64 @@
   .dark .messages-list::-webkit-scrollbar-thumb {
     background: #555;
   }
+  
+  /* === ANIMATION === */
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* === DARK MODE === */
+  
+  .dark {
+    background-color: #121212;
+  }
+  
+  .dark .chat-box {
+    background-color: #1e1e1e;
+    color: #eee;
+  }
+  
+  .dark .message-mine {
+    background-color: #2e2e2e;
+  }
+  
+  .dark .message-other {
+    background-color: #333;
+  }
+  
+  .dark .message-time {
+    color: #aaa;
+  }
+  
+  .dark .chat-input {
+    background-color: #2c2c2c;
+    color: #eee;
+    border: 1px solid #555;
+  }
+  
+  .dark .send-button {
+    background-color: #2563eb;
+  }
+  
+  .dark .emoji-button {
+    color: #eee;
+  }
+  
+  .dark .toggle-button,
+  .dark .logout-button {
+    border-color: #666;
+    color: #ddd;
+  }
+  
+  .dark .typing-indicator {
+    color: #aaa;
+  }
+  

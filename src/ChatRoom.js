@@ -153,13 +153,13 @@ export default function ChatRoom() {
       </div>
 
       <div style={{ marginTop: "1rem" }}>
-        {showPicker && (
-          <EmojiPicker
-            onEmojiClick={(event, emojiObject) =>
-              setMessage((prev) => prev + emojiObject.emoji)
-            }
-          />
-        )}
+      {showPicker && (
+        <EmojiPicker
+          onEmojiClick={(emojiObject) =>
+            setMessage((prev) => prev + emojiObject.emoji)
+          }
+      />      
+      )}
 
         <form
           onSubmit={handleSend}
